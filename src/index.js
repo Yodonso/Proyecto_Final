@@ -2,6 +2,7 @@
 /* ---------------------------- metodos generales --------------------------- */
 import express from 'express';
 import morgan from 'morgan';
+import personasRoutes from './routes/personas.routes.js'
 
 /* --------------------------- metodos especificos -------------------------- */
 import {join, dirname} from 'path'
@@ -36,7 +37,7 @@ app.use(express.json());
 app.get('/', (req, res)=>{
     res.render('index')
 });
-
+app.use(personasRoutes);
 /* ------------------------------ public files ------------------------------ */
 app.use(express.static(join(__dirname, 'public')))
 
