@@ -3,7 +3,25 @@ import pool from '../database.js'
 
 const router= Router();
 
+/* --------------------- crea nuevo items para guardar ------------------------- */
+router.get('/add', ( req , res)=>{
+  res.render('personas/add')
+});
 
+router.post('/add', async (req, res)=>{
+  try {
+      const { name, lastname, age} = req.body
+      const newPersona = {
+          name, lastname, age
+      }
+      await pool.query('INSERT INTO personas SET ?', [newPersona]);
+      res.redirect('/list');
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+});
+
+ /* ------------------------ muestra la lista de items ----------------------- */
 router.get('/list', async(req, res) =>{
     try{
         const[result]= await pool.query('SELECT * FROM personas');
@@ -14,6 +32,7 @@ router.get('/list', async(req, res) =>{
     }
 });
 
+/* --------------------- comando para eliminar un items --------------------- */
 router.get('/delete/:id', async(req, res)=>{
   try{
     const {id}= req.params
